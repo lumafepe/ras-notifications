@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  notifications:
+    build: ./notifications
+    ports:
+      - 8000:8000
+    environment:
+      - TZ=Europe/Lisbon
+    networks:
+      - notifications
+    depends_on:
+      - notifications-postgres
+      - notifications-redis
+
+  notifications-postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - notifications-postgres-data:/var/lib/postgresql/data
+    networks:
+      - notifications
+    environment:
+      - POSTGRES_DB=notifications
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - TZ=Europe/Lisbon
+
+  notifications-redis:  # Define Redis service
+    image: redis
+    ports:
+      - 6379:6379
+    networks:
+      - notifications
+    depends_on:
+      - notifications-postgres
+    environment:
+      - TZ=Europe/Lisbon
+
+volumes:
+  notifications-postgres-data:
+
+networks:
+  notifications:
+    driver: bridge
