@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     
     'channels',
+    "corsheaders",
      
     "api",
     
@@ -64,6 +65,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = "notifications.urls"
@@ -85,6 +88,7 @@ TEMPLATES = [
 ]
 ASGI_APPLICATION = "notifications.asgi.application"
 #WSGI_APPLICATION = "notifications.wsgi.application"
+CORS_ALLOW_ALL_ORIGINS=True
 
 CHANNEL_LAYERS = {
     "default": {
