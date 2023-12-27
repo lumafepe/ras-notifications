@@ -1,6 +1,7 @@
 from django.db import models
 import uuid
 from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 # Create your models here.
 
 
@@ -43,7 +44,7 @@ class CustomUserNotificationManager(models.Manager):
         for user_id in users:
             # Send notification to the user's WebSocket group
             channel_layer = get_channel_layer()
-            channel_layer.group_send(
+            async_to_sync(channel_layer.group_send)(
                 f'user_{user_id}',
                 {
                     'type': 'send_notification',
