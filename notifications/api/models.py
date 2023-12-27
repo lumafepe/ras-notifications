@@ -39,7 +39,7 @@ class Notification(models.Model):
     
     
 class CustomUserNotificationManager(models.Manager):
-    def create_user_notification(self,users:list[str],message:str):
+    def create_user_notification(self,users:list[str],title:str,subject:str,message:str):
         notification = Notification.objects.create(message=message)
         for user_id in users:
             # Send notification to the user's WebSocket group
@@ -48,7 +48,12 @@ class CustomUserNotificationManager(models.Manager):
                 f'user_{user_id}',
                 {
                     'type': 'send_notification',
-                    'message': message
+                    'data': {
+                        "title":title,
+                        "subject":subject,
+                        "description":message,
+                        "timestamp":int(notification.timestamp.timestamp())
+                    }
                 }
             )
         users = [ User.objects.get_or_create_user(user) for user in users ]

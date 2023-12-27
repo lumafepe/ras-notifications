@@ -105,7 +105,8 @@ class SendExamDetailsAPIView(APIView):
             # Access the validated data
             userids,emails = zip(*serializer.validated_data['users'])
             examid,exam = serializer.validated_data['exam']
-            UserNotification.objects.create_user_notification(userids, 
+            UserNotification.objects.create_user_notification(userids,
+                "Enrolled in exam",f"{exam['examUC']}", 
                 f"You Were enrolled in exam: {exam['examName']}"+"\n"+
                 f"Exam Date: {exam['examDate']}"+"\n"+
                 f"Exam Time: {exam['examHour']}"
@@ -148,7 +149,8 @@ class SendExamAccessAPIView(APIView):
             # Access the validated data
             userids,emails = zip(*serializer.validated_data['users'])
             examid,exam = serializer.validated_data['exam']
-            UserNotification.objects.create_user_notification(userids, 
+            UserNotification.objects.create_user_notification(userids,
+                "Invited to exam",f"{exam['examUC']}",                                               
                 f"You Were invited to an exam: {exam['examName']}")
             Mailer.send_exam_access_email(emails,exam)
             return Response({'message': 'Notifications Sent'}, status=status.HTTP_200_OK)
@@ -187,7 +189,8 @@ class SendExamGradesAPIView(APIView):
             # Access the validated data
             userids,emails = zip(*serializer.validated_data['users'])
             examid,exam = serializer.validated_data['exam']
-            UserNotification.objects.create_user_notification(userids, 
+            UserNotification.objects.create_user_notification(userids,
+                "Grades published",f"{exam['examUC']}",
                 f"The grades for the exam: {exam['examName']} where puslished")
             Mailer.send_grades_exam_email(emails,exam)
             return Response({'message': 'Notifications Sent'}, status=status.HTTP_200_OK)
@@ -226,7 +229,8 @@ class SendExamRoomDeletedAPIView(APIView):
             # Access the validated data
             userids,emails = zip(*serializer.validated_data['users'])
             examid,exam = serializer.validated_data['exam']
-            UserNotification.objects.create_user_notification(userids, 
+            UserNotification.objects.create_user_notification(userids,
+                "Room for exam deleted",f"{exam['examUC']}", 
                 f"The room for the exam: {exam['examName']} was deleted")
             Mailer.send_exam_room_deleted_email(emails,exam)
             return Response({'message': 'Notifications Sent'}, status=status.HTTP_200_OK)
