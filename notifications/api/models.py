@@ -52,7 +52,7 @@ class CustomUserNotificationManager(models.Manager):
                         "title":title,
                         "subject":subject,
                         "description":message,
-                        "timestamp":notification.timestamp
+                        "timestamp":int(notification.timestamp.timestamp())
                     }
                 }
             )
