@@ -23,4 +23,4 @@ EXPOSE 8000
 
 # Set up the entrypoint command
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py migrate api && python manage.py runserver 0.0.0.0:8000"]
