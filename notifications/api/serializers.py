@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import User,Notification
+import requests
 
 class IdFieldToEmail(serializers.UUIDField):
     def to_internal_value(self, data):
@@ -16,23 +17,10 @@ class IdFieldToExam(serializers.UUIDField):
     
     def get_exam(self, exam_id):
         try:
-            """
-            #TODO:: change this
-            # Assuming your user API endpoint is at 'Exam/id/'
-            response = requests.get(f'http://example.com/Exam/{user_id}/')  # Replace 'example.com' with your actual domain
+            response = requests.get(f'http://nginx/exams/exam?examID={exam_id}')  # Replace 'example.com' with your actual domain
             response.raise_for_status()  # Raise an exception for bad responses (4xx and 5xx)
-
-            user_data = response.json()
-            return user_data.get('idfk')
-            """
-            return {
-                  "examName": "RAS - Exam number 1",
-                  "examUC": "RAS",
-                  "examDate": "16/12/2023",
-                  "examHour": "16:00",
-                  "examAdmissionTime": "00:15",
-                  "examDuration": "02:30"
-            }
+            exam_data = response.json()
+            return exam_data.get('header')
         except requests.exceptions.RequestException as e:
             # Handle request errors (e.g., connection error, timeout)
             return None

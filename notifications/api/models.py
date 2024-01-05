@@ -2,6 +2,7 @@ from django.db import models
 import uuid
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
+import requests
 # Create your models here.
 
 
@@ -14,18 +15,11 @@ class CustomUserManager(models.Manager):
         
     def get_email(self, user_id):
         try:
-            """
-            #TODO:: change this
-            # Assuming your user API endpoint is at 'Users/id/'
-            response = requests.get(f'http://example.com/Users/{user_id}/')  # Replace 'example.com' with your actual domain
+            response = requests.get(f'http://nginx/users/{user_id}')  # Replace 'example.com' with your actual domain
             response.raise_for_status()  # Raise an exception for bad responses (4xx and 5xx)
-
             user_data = response.json()
             return user_data.get('email')
-            """
-            return "lumafepe@gmail.com"
-        except requests.exceptions.RequestException as e:
-            # Handle request errors (e.g., connection error, timeout)
+        except Exception as e:
             return None
 
 class User(models.Model):
