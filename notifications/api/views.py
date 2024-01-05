@@ -108,8 +108,7 @@ class SendExamDetailsAPIView(APIView):
             UserNotification.objects.create_user_notification(userids,
                 "Enrolled in exam",f"{exam['examUC']}", 
                 f"You Were enrolled in exam: {exam['examName']}"+"\n"+
-                f"Exam Date: {exam['examDate']}"+"\n"+
-                f"Exam Time: {exam['examHour']}"
+                f"Exam Date: {exam['examAdmissionTime']}"
             )
             Mailer.send_exam_details_email(emails, exam)
             return Response({'message': 'Notifications Sent'}, status=status.HTTP_200_OK)
