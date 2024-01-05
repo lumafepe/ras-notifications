@@ -285,7 +285,10 @@ class getNotificationsAPIView(APIView):
         },
     )
     def get(self, request, id):
-        user = get_object_or_404(User, id=id)
+        user = User.objects.filter(id=id)
+        if user is None:
+            Response({"unread":[],"read":[]}, status=status.HTTP_200_OK)
+        user =  user.first()
         user_notifications_unread = UserNotification.objects.filter(user=user,is_read=False).order_by('-notification__timestamp')
         user_notifications_read = UserNotification.objects.filter(user=user,is_read=True).order_by('-notification__timestamp')
         serialized_notifications_unread = self.serializer_class([n.notification for n in user_notifications_unread], many=True)
